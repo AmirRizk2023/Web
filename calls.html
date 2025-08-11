@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Calls / Tickets</h2>
+<table>
+  <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Message</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+  <tbody>
+  {% for c in calls %}
+    <tr>
+      <td>{{c.id}}</td>
+      <td>{{c.name}}</td>
+      <td>{{c.email}}</td>
+      <td>{{c.message}}</td>
+      <td>{{c.status}}</td>
+      <td>{{c.created_at}}</td>
+      <td>
+        <form action="/calls/action" method="post" style="display:inline">
+          <input type="hidden" name="call_id" value="{{c.id}}">
+          <button name="action" value="solve">Solved</button>
+        </form>
+        <form action="/calls/action" method="post" style="display:inline">
+          <input type="hidden" name="call_id" value="{{c.id}}">
+          <button name="action" value="cancel">Cancel</button>
+        </form>
+        <form action="/calls/action" method="post" style="display:inline">
+          <input type="hidden" name="call_id" value="{{c.id}}">
+          <button name="action" value="activate">Make Active</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

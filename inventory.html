@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Inventory by Unit</h2>
+<div class="units">
+  {% for unit, emps in units.items() %}
+    <section class="unit">
+      <h3>{{unit}}</h3>
+      <ul>
+      {% for e in emps %}
+        <li><a href="/employee/{{e.id}}">{{e.name}}</a> — {{e.email or ''}}</li>
+      {% endfor %}
+      </ul>
+    </section>
+  {% endfor %}
+</div>
+
+<h3>Add Employee</h3>
+<form action="/add_employee" method="post">
+  <input name="name" placeholder="Name" required>
+  <input name="email" placeholder="Email">
+  <input name="unit" placeholder="Unit">
+  <button type="submit">Add</button>
+</form>
+
+<h3>Add Device</h3>
+<form action="/add_device" method="post">
+  <input name="model" placeholder="Model (e.g. Dell Latitude 5420)" required>
+  <input name="serial" placeholder="Serial">
+  <select name="employee_id">
+    <option value="">--Assign to employee (optional)--</option>
+    {% for unit, emps in units.items() %}
+      {% for e in emps %}
+        <option value="{{e.id}}">{{e.name}} ({{unit}})</option>
+      {% endfor %}
+    {% endfor %}
+  </select>
+  <button type="submit">Add Device</button>
+</form>
+{% endblock %}
