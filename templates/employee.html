@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{employee.name}}</h2>
+<p>Email: {{employee.email}}</p>
+<p>Unit: {{employee.unit}}</p>
+
+<h3>Devices</h3>
+<ul>
+  {% for d in employee.devices %}
+    <li>{{d.model}} — {{d.serial}} — {{d.status}}
+      <form style="display:inline" action="/detach_device" method="post">
+        <input type="hidden" name="device_id" value="{{d.id}}">
+        <button type="submit">Detach</button>
+      </form>
+    </li>
+  {% else %}
+    <li>No devices</li>
+  {% endfor %}
+</ul>
+
+<h3>Attach existing device to this employee</h3>
+<form action="/attach_device" method="post">
+  <select name="device_id">
+    {% set all_devices = namespace(val=[]) %}
+    {% for dev in (cycler=None) %}{% endfor %}
+    {% for dev in employee.query.session.query('Device').all() %}{% endfor %}
+    <!-- simpler: we'll provide via backend change later if needed -->
+  </select>
+</form>
+
+{% endblock %}
